@@ -104,6 +104,7 @@ class _LoginUserState extends State<LoginUser>{
                     var password = _passwordController.text;
                     var jwt = await attemptLogIn(username, password);
                     if(jwt != null) {
+                      Fact().testAPi();    
                       Navigator.push(
                           context,
                           MaterialPageRoute(
