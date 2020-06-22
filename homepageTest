@@ -1,40 +1,39 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
-import 'package:adobe_xd/page_link.dart';
 import 'package:logintasktwo/login.dart';
 import 'dart:convert';
 import 'dart:async';
-import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 
-
-
-
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key key, this.title}) : super(key: key);
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePage createState() => _HomePage();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePage extends State<HomePage> {
 
   Future<Fact> attemptLogIn(String recToken , String recId) async {
     var res = await http.post(
         "http://owlbridge.in/quiz/apis/test",
         headers: {
           "Authorizations": recToken,
-          "id": recId
+          "id": recId,
         },
+        body: {
+          "id": recId,
+        }
     );
 
     if(res.statusCode == 200){
       final responseJson = json.decode(res.body);
-      print(responseJson);
+      print("successs");
       return Fact.fromJson(responseJson);
+    }else{
+      print("you got error");
     }
     return null;
   }
@@ -70,7 +69,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: FlatButton(
             onPressed: () async {
               String recToken = await getTOken();
-              String recId = await getTOken();
+              String recId = await getId();
               var jwt = await attemptLogIn(recToken,recId);
               if(jwt != null) {
                 displayDialog(context, "successfull", "account dedected");
@@ -78,9 +77,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 displayDialog(context, "An Error Occurred", "No account was found matching that username and password");
               }
             },
-            child: Text("test")
+            child: Text("TestAPi")
         ),
-
       ),);
   }
 }
