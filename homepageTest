@@ -25,10 +25,10 @@ class _MyHomePageState extends State<MyHomePage> {
   Future<Fact> attemptLogIn(String recToken , String recId) async {
     var res = await http.post(
         "http://owlbridge.in/quiz/apis/test",
-        body: {
+        headers: {
           "Authorizations": recToken,
           "id": recId
-        }
+        },
     );
 
     if(res.statusCode == 200){
